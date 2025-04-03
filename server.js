@@ -31,30 +31,56 @@ const server = http.createServer(function(req, res) {
     });
   }
   else if (page == '/api') {
-    let choice = Math.floor(Math.random() * 2)
-    console.log(choice)
-    if('student' in params){
-      console.log(params['student'])
-      if (params['student'] === params['student'].toLowerCase().split("").reverse().join("")) {
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        const objToJson = {
-          name: `Your word is ${params['student']}`,
-          status: "This is a palindrome!",
-          currentOccupation: "test"
-        }
-        res.end(JSON.stringify(objToJson));
-      }//student = leon
+    // check first and second parameter
+    // define rules of the game (which pairs belong to each other)
+
+    // frontend - user clicks on one card and value is stored
+    // backend - evalutes whether 
+
+    let options = {
+      Card1: "valueOne",
+      Card2: "valueTwo",
+      Card3: "valueFour",
+      Card4: "valueFive",
+      Card5: "valueFive",
+      Card6: "valueFour",
+      Card7: "valueOne",
+      Card8: "valueThree",
+      Card9: "valueTwo",
+      Card10: "valueThree",
+    }
+
+    console.log(options)
+
+    // comparing values together between cardOne and cardTwo
+    if (options[params['cardOne']] === options[params['cardTwo']]) {
+      console.log('You have a match!')
+    } else {
+      console.log('Try again!')
+    }
+
+    // if('cardOne' in params){
+    //   console.log(params['cardOne'])
+    //   if (params['cardOne'] === params['cardTwo']) {
+    //     res.writeHead(200, {'Content-Type': 'application/json'});
+    //     const objToJson = {
+    //       name: `You selected: ${params['cardOne']} and ${params['cardTwo']}`,
+    //       status: "This is a palindrome!",
+    //       currentOccupation: "test"
+    //     }
+    //     res.end(JSON.stringify(objToJson));
+    //   }//student = leon
       
-      else if (params['student'] != 'leon'){
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        const objToJson = {
-          name: `Your word is ${params['student']}`,
-          status: "This is not a palindrome...",
-          currentOccupation: "test two"
-        }
-        res.end(JSON.stringify(objToJson));
-      }//student != leon
-    }//student if
+    //   else if (params['cardOne'] != params['cardTwo']){
+    //     res.writeHead(200, {'Content-Type': 'application/json'});
+    //     const objToJson = {
+    //       name: `You selected: ${params['cardOne']} and ${params['cardTwo']}`,
+    //       status: "This is not a palindrome...",
+    //       currentOccupation: "test two"
+    //     }
+    //     res.end(JSON.stringify(objToJson));
+    //   }//student != leon
+    // }//student if
   }//else if
   else if (page == '/css/style.css'){
     fs.readFile('css/style.css', function(err, data) {

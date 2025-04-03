@@ -1,17 +1,33 @@
-document.querySelector('#clickMe').addEventListener('click', makeReq)
+let cards = document.getElementsByClassName('card')
 
-function makeReq(){
+for (i= 0; i < cards.length; i++) {
+    cards[i].addEventListener('click', makeReq)
+}
 
-  const userName = document.querySelector("#userName").value;
+let selection = []
 
-  fetch(`/api?student=${userName}`)
+// console.log(document.getElementsByClassName('card'))
+
+function makeReq(e){
+
+  selection.push(e.target.innerText)
+  console.log(selection)
+
+  if (selection.length === 2) {
+    // magic happens
+    fetch(`/api?cardOne=${selection[0]}&cardTwo=${selection[1]}`)
     .then(response => response.json())
     .then((data) => {
       console.log(data);
-      document.querySelector("#personName").textContent = data.name
-      document.querySelector("#personStatus").textContent = data.status
-      // document.querySelector("#personOccupation").textContent = data.currentOccupation
+      
+      
     });
+    selection = []
+  }
+
+  
+
+  
 
 }
 
