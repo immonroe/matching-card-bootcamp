@@ -1,64 +1,47 @@
 let cards = document.getElementsByClassName('card')
 
-for (i= 0; i < cards.length; i++) {
-    cards[i].addEventListener('click', makeReq)
+for (let i = 0; i < cards.length; i++) {
+  cards[i].addEventListener('click', makeReq)
 }
 
 let selection = []
+let flippedCards = []
 
-// console.log(document.getElementsByClassName('card'))
+function makeReq(e) {
+  // Fixed bug where previously cards would turn back over immediately lol this should fix it
+  if (selection.length === 2) return
 
-function makeReq(e){
+  // Get the value of the clicked card's data-value attribute
+  // used clsostest() to find closest ancestor? sounds like anime lore - tested and looked up docs via MDN
+  const card = e.target.closest('.card')
+  const cardValue = card.getAttribute('data-value')
 
-  selection.push(e.target.innerText)
-  console.log(selection)
+  // Once card is clicked, it is flipped by adding it to the clippedCards arr
+  card.classList.add('flipped')
+  flippedCards.push(card)
+
+  selection.push(cardValue)
+  console.log(selection) //
 
   if (selection.length === 2) {
-    // magic happens
-    fetch(`/api?cardOne=${selection[0]}&cardTwo=${selection[1]}`)
-    .then(response => response.json())
-    .then((data) => {
-      console.log(data);
-      
-      
-    });
-    selection = []
+    // Don't let it happen immediately
+    setTimeout(() => {
+      if (selection[0] === selection[1]) {
+        // console.log('You have a match!')
+        alert('You have a match!')
+      } else {
+        // console.log('Try again!')
+        alert('Try again!')
+
+        // Flip both cards back over after a short delay - used higher order function to iterate over all cards
+        flippedCards.forEach(card => {
+          card.classList.remove('flipped')
+        })
+      }
+
+      // Reset for the next selection
+      selection = []
+      flippedCards = []
+    }, 1000)
   }
-
-  
-
-  
-
 }
-
-// document.getElementById("clickMe").onclick = makeReq;
-//
-// function makeReq(){
-//
-//   var userName = document.getElementById("userName").value;
-//
-//   var request = new XMLHttpRequest();
-//   request.open('GET', '/api?student='+userName, true);
-//
-//   request.onload = function() {
-//       console.log("works")
-//       if (request.status >= 200 && request.status < 400) {
-//         // Success!
-//         var data = JSON.parse(request.responseText);
-//         console.log(data)
-//         document.getElementById("personName").innerHTML = data.name
-//         document.getElementById("personStatus").innerHTML = data.status
-//         document.getElementById("personOccupation").innerHTML = data.currentOccupation
-//
-//       } else {
-//         // We reached our target server, but it returned an error
-//
-//       }
-//     };
-//
-//     request.onerror = function() {
-//       // There was a connection error of some sort
-//     };
-//
-//     request.send();
-// }
